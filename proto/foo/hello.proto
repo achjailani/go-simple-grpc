@@ -1,0 +1,26 @@
+syntax = "proto3";
+
+option go_package = "proto/foo";
+
+package foo;
+
+message HelloRequest {
+  string text = 1;
+}
+
+message HelloReply {
+  string message = 1;
+}
+
+message PingRequest {
+}
+
+message PingReply {
+  string redis = 1;
+  string db = 2;
+}
+
+service Hello {
+  rpc SayHello (HelloRequest) returns (HelloReply);
+  rpc Ping (PingRequest) returns (PingReply);
+}

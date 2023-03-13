@@ -1,0 +1,43 @@
+syntax = "proto3";
+
+option go_package = "proto/foo";
+
+package foo;
+
+message SaveHttpLogRequest {
+  string ip = 1;
+  string path = 2;
+  string method = 3;
+}
+
+message FindHttpLogRequest {
+  string id = 1;
+}
+
+message GetHttpLogRequest {}
+
+message HttpLog {
+  int64 id = 1;
+  string ip = 2;
+  string path = 3;
+  string method = 4;
+  string created_at = 5;
+  string updated_at = 6;
+  string deleted_at = 7;
+}
+
+message HttpLogStreamResponse {
+  int32 total = 1;
+  int32 duration = 2;
+}
+
+message HttpLogs {
+  repeated HttpLog logs = 1;
+}
+
+service LogService {
+  rpc SaveHttpLog(SaveHttpLogRequest) returns (HttpLog);
+  rpc SaveStreamHttpLog(stream SaveHttpLogRequest) returns (HttpLogStreamResponse);
+  rpc FindHttpLog(FindHttpLogRequest) returns (HttpLog);
+  rpc GetHttpLog(GetHttpLogRequest) returns (HttpLogs);
+}

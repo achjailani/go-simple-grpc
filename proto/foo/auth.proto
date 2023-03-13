@@ -1,0 +1,31 @@
+syntax = "proto3";
+
+option go_package = "proto/foo";
+
+package foo;
+
+service Auth {
+  rpc AuthRegister(IAuth) returns (RegisterResponse) {}
+  rpc AuthLogin(AuthLoginPayload) returns (LoginResponse) {}
+}
+
+message IAuth {
+  string name = 1;
+  string username = 2;
+  string password = 3;
+}
+
+message AuthLoginPayload {
+  string username = 1;
+  string password = 2;
+}
+
+message RegisterResponse {
+  bool ok = 1;
+}
+
+message LoginResponse {
+  bool ok = 1;
+  string access_token = 2;
+}
+
