@@ -11,6 +11,7 @@ go install google.golang.org/protobuf/cmd/protoc-gen-go@v1.28
 go install google.golang.org/grpc/cmd/protoc-gen-go-grpc@v1.2
 ```
 
+Clone repository
 ```shell
 git clone https://github.com/achjailani/go-simple-grpc.git
 ```
@@ -18,6 +19,10 @@ Install
 
 ```shell
 cd go-simple-grpc && go mod download 
+```
+Compile proto
+```shell
+make run-proto
 ```
 
 ## Running Application
