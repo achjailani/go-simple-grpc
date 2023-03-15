@@ -25,9 +25,8 @@ func NewGRPCConn(_ *config.Config) (*grpc.ClientConn, error) {
 
 	conn, err := grpc.Dial(*addr,
 		grpc.WithTransportCredentials(insecure.NewCredentials()),
-		grpc.WithChainUnaryInterceptor(
-			interceptor.UnaryAuthClientInterceptor(),
-		),
+		grpc.WithChainUnaryInterceptor(interceptor.UnaryAuthClientInterceptor()),
+		grpc.WithStreamInterceptor(interceptor.StreamAuthClientInterceptor()),
 	)
 	if err != nil {
 		return nil, err
