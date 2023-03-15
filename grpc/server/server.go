@@ -4,12 +4,13 @@ import (
 	"github/achjailani/go-simple-grpc/config"
 	"github/achjailani/go-simple-grpc/domain/service"
 	"github/achjailani/go-simple-grpc/grpc/handler"
+	"github/achjailani/go-simple-grpc/grpc/interceptor"
 	"github/achjailani/go-simple-grpc/proto/foo"
 	"google.golang.org/grpc"
 	"google.golang.org/grpc/reflection"
 )
 
-// Server is struct
+// Server is struct to hold any dependencies used for server
 type Server struct {
 	config *config.Config
 	repo   *service.Repositories
@@ -23,10 +24,14 @@ func NewGRPCServer(conf *config.Config, repo *service.Repositories) *Server {
 	}
 }
 
-// Run is a method
+// Run is a method gRPC server
 func (s *Server) Run(port int) error {
-	//server := grpc.NewServer(grpc.UnaryInterceptor(interceptors.AuthorizationInterceptor))
-	server := grpc.NewServer()
+	//server := grpc.NewServer(grpc.UnaryInterceptor(interceptor.AuthorizationInterceptor))
+	server := grpc.NewServer(
+		grpc.ChainUnaryInterceptor(
+			interceptor.UnaryLoggerServerInterceptor(),
+			interceptor.UnaryAuthServerInterceptor(),
+		))
 
 	handlers := handler.NewHandler(s.config, s.repo)
 

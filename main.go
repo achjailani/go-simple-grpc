@@ -3,10 +3,10 @@ package main
 import (
 	"github.com/joho/godotenv"
 	"github.com/urfave/cli/v2"
-	"github/achjailani/go-simple-grpc/client"
 	"github/achjailani/go-simple-grpc/cmd"
 	"github/achjailani/go-simple-grpc/config"
 	"github/achjailani/go-simple-grpc/domain/service"
+	"github/achjailani/go-simple-grpc/grpc/client"
 	"github/achjailani/go-simple-grpc/infrastructure/persistence"
 	"github/achjailani/go-simple-grpc/rest"
 	"github/achjailani/go-simple-grpc/rest/route"

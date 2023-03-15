@@ -4,6 +4,7 @@ import (
 	"flag"
 	"fmt"
 	"github/achjailani/go-simple-grpc/config"
+	"github/achjailani/go-simple-grpc/grpc/interceptor"
 	"google.golang.org/grpc"
 	"google.golang.org/grpc/credentials/insecure"
 )
@@ -22,7 +23,12 @@ var (
 func NewGRPCConn(_ *config.Config) (*grpc.ClientConn, error) {
 	flag.Parse()
 
-	conn, err := grpc.Dial(*addr, grpc.WithTransportCredentials(insecure.NewCredentials()))
+	conn, err := grpc.Dial(*addr,
+		grpc.WithTransportCredentials(insecure.NewCredentials()),
+		grpc.WithChainUnaryInterceptor(
+			interceptor.UnaryAuthClientInterceptor(),
+		),
+	)
 	if err != nil {
 		return nil, err
 	}

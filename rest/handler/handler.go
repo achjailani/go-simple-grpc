@@ -1,8 +1,8 @@
 package handler
 
 import (
-	"github/achjailani/go-simple-grpc/client"
 	"github/achjailani/go-simple-grpc/domain/service"
+	"github/achjailani/go-simple-grpc/grpc/client"
 )
 
 // Handler is a struct

@@ -1,9 +1,9 @@
 package route
 
 import (
-	"github/achjailani/go-simple-grpc/client"
 	"github/achjailani/go-simple-grpc/config"
 	"github/achjailani/go-simple-grpc/domain/service"
+	"github/achjailani/go-simple-grpc/grpc/client"
 )
 
 // Router is a struct contains dependencies needed
