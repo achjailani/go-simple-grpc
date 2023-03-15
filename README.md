@@ -3,6 +3,14 @@
 ## Installation
 Clone repository
 
+## Proto compiler
+
+As we're using Go, the compiler should be the same language
+```shell
+go install google.golang.org/protobuf/cmd/protoc-gen-go@v1.28
+go install google.golang.org/grpc/cmd/protoc-gen-go-grpc@v1.2
+```
+
 ```shell
 git clone https://github.com/achjailani/go-simple-grpc.git
 ```
