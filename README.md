@@ -1,7 +1,5 @@
 # GO Simple gRPC
 
-## Installation
-Clone repository
 
 ## Proto compiler
 
@@ -11,6 +9,7 @@ go install google.golang.org/protobuf/cmd/protoc-gen-go@v1.28
 go install google.golang.org/grpc/cmd/protoc-gen-go-grpc@v1.2
 ```
 
+## Installation
 Clone repository
 ```shell
 git clone https://github.com/achjailani/go-simple-grpc.git
