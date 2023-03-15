@@ -26,7 +26,10 @@ go run main.go
 Any related things to gRPC server could be found in `grpc` directory, including `handler`, `server` and `interceptors`
 
 ## gRPC Client
-Any related things to gRPC client could be found in `client` directory, including `connection`, `method call`
+Any related things to gRPC client could be found in `grpc/client` directory, including `connection`, `method call`
 
 ## REST API
 Any related things to REST API could be found in `rest` directory
+
+## gRPC Interceptor
+All interceptors are in `grpc/interceptor` directory
