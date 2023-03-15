@@ -26,7 +26,6 @@ func NewGRPCServer(conf *config.Config, repo *service.Repositories) *Server {
 
 // Run is a method gRPC server
 func (s *Server) Run(port int) error {
-	//server := grpc.NewServer(grpc.UnaryInterceptor(interceptor.AuthorizationInterceptor))
 	server := grpc.NewServer(
 		grpc.ChainUnaryInterceptor(
 			interceptor.UnaryLoggerServerInterceptor(),
