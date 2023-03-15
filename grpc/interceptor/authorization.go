@@ -58,6 +58,7 @@ func UnaryAuthServerInterceptor() grpc.UnaryServerInterceptor {
 			return status.Error(codes.Unauthenticated, "no token provided"), nil
 		}
 
+		// TODO implement checking valid token
 		log.Printf("AUTH TOKEN: %s\n", tokenAuth)
 
 		return handler(ctx, req)
