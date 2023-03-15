@@ -64,3 +64,9 @@ func UnaryAuthServerInterceptor() grpc.UnaryServerInterceptor {
 		return handler(ctx, req)
 	}
 }
+
+//func StreamAuthServerInterceptor() grpc.StreamServerInterceptor {
+//	return func(srv interface{}, ss grpc.ServerStream, info *grpc.StreamServerInfo, handler grpc.StreamHandler) error {
+//
+//	}
+//}

@@ -31,7 +31,11 @@ func (s *Server) Run(port int) error {
 		grpc.ChainUnaryInterceptor(
 			interceptor.UnaryLoggerServerInterceptor(),
 			interceptor.UnaryAuthServerInterceptor(),
-		))
+		),
+		grpc.ChainStreamInterceptor(
+			interceptor.StreamLoggerServerInterceptor(),
+		),
+	)
 
 	handlers := handler.NewHandler(s.config, s.repo)
 
