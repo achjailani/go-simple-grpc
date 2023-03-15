@@ -34,6 +34,7 @@ func (s *Server) Run(port int) error {
 		),
 		grpc.ChainStreamInterceptor(
 			interceptor.StreamLoggerServerInterceptor(),
+			interceptor.StreamAuthServerInterceptor(),
 		),
 	)
 

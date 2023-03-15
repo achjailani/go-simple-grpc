@@ -48,25 +48,44 @@ func UnaryAuthServerInterceptor() grpc.UnaryServerInterceptor {
 			return handler(ctx, req)
 		}
 
-		m, valid := metadata.FromIncomingContext(ctx)
-		if !valid {
-			return nil, status.Error(codes.Unauthenticated, "no metadata provided")
+		if errAuthorize := serverAuthorize(ctx); errAuthorize != nil {
+			return nil, errAuthorize
 		}
-
-		tokenAuth, exist := m["authorization"]
-		if !exist {
-			return status.Error(codes.Unauthenticated, "no token provided"), nil
-		}
-
-		// TODO implement checking valid token
-		log.Printf("AUTH TOKEN: %s\n", tokenAuth)
 
 		return handler(ctx, req)
 	}
 }
 
-//func StreamAuthServerInterceptor() grpc.StreamServerInterceptor {
-//	return func(srv interface{}, ss grpc.ServerStream, info *grpc.StreamServerInfo, handler grpc.StreamHandler) error {
-//
-//	}
-//}
+// StreamAuthServerInterceptor is a function to handle stream authorization
+func StreamAuthServerInterceptor() grpc.StreamServerInterceptor {
+	return func(srv interface{}, stream grpc.ServerStream, info *grpc.StreamServerInfo, handler grpc.StreamHandler) error {
+		// check if method is not protected
+		if !contract.ProtectedMethods()[info.FullMethod] {
+			return handler(srv, stream)
+		}
+
+		if errAuthorize := serverAuthorize(stream.Context()); errAuthorize != nil {
+			return errAuthorize
+		}
+
+		return handler(srv, stream)
+	}
+}
+
+// serverAuthorize is a private function to handle authorization
+func serverAuthorize(ctx context.Context) error {
+	m, valid := metadata.FromIncomingContext(ctx)
+	if !valid {
+		return status.Error(codes.Unauthenticated, "no metadata provided")
+	}
+
+	tokenAuth, exist := m["authorization"]
+	if !exist {
+		return status.Error(codes.Unauthenticated, "no token provided")
+	}
+
+	// TODO implement checking valid token
+	log.Printf("AUTH TOKEN: %s\n", tokenAuth)
+
+	return nil
+}
