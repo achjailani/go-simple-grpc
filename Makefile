@@ -1,4 +1,4 @@
-run-proto:
+proto:
 	for f in proto/*/*.proto; do \
 		protoc --go_out=. $$f; \
 		protoc --go-grpc_out=. $$f; \

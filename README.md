@@ -21,7 +21,7 @@ cd go-simple-grpc && go mod download
 ```
 Compile proto
 ```shell
-make run-proto
+make proto
 ```
 
 ## Running Application
