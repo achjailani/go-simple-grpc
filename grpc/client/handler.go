@@ -3,6 +3,7 @@ package client
 import (
 	"context"
 	"flag"
+	"fmt"
 	"github/achjailani/go-simple-grpc/proto/foo"
 	"google.golang.org/grpc"
 	"google.golang.org/grpc/credentials/insecure"
@@ -11,18 +12,18 @@ import (
 	"time"
 )
 
-func Run() {
+func Run() error {
 	flag.Parse()
 
 	conn, err := grpc.Dial(*addr, grpc.WithTransportCredentials(insecure.NewCredentials()))
 	if err != nil {
-		log.Fatalf("Cannot connect to server :%v\n", err)
+		return fmt.Errorf("Cannot connect to server :%v", err)
 	}
 
 	defer func(conn *grpc.ClientConn) {
 		errClose := conn.Close()
 		if errClose != nil {
-			log.Fatalf("err close, %w", errClose)
+			log.Fatalf("err close, %v", errClose)
 		}
 	}(conn)
 
@@ -49,8 +50,8 @@ func Run() {
 
 	err = gClient.SaveHttpLog(ctx, payloads)
 	if err != nil {
-		log.Fatalf("Could not call: %v", err)
+		return fmt.Errorf("Could not call: %v", err)
 	}
 
-	log.Printf("Get from server: \n")
+	return nil
 }
