@@ -16,8 +16,8 @@ type Interface interface {
 
 // Dependency collects dependencies needed by handler
 type Dependency struct {
-	config *config.Config
-	repo   *service.Repositories
+	Config *config.Config
+	Repo   *service.Repositories
 }
 
 // CoreGRPCService collects grpc service server
@@ -30,7 +30,7 @@ type CoreGRPCService struct {
 
 // Handler is struct
 type Handler struct {
-	dep *Dependency
+	Dependency *Dependency
 
 	CoreGRPCService
 }
@@ -38,9 +38,9 @@ type Handler struct {
 // NewHandler is a constructor
 func NewHandler(conf *config.Config, repo *service.Repositories) *Handler {
 	return &Handler{
-		dep: &Dependency{
-			config: conf,
-			repo:   repo,
+		Dependency: &Dependency{
+			Config: conf,
+			Repo:   repo,
 		},
 	}
 }

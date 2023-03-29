@@ -13,7 +13,7 @@ func (c *Handler) AuthLogin(ctx context.Context, r *foo.AuthLoginPayload) (*foo.
 	username := r.GetUsername()
 	password := r.GetPassword()
 
-	us, err := c.dep.repo.User.FindByUsername(ctx, username)
+	us, err := c.Dependency.Repo.User.FindByUsername(ctx, username)
 
 	if err != nil {
 		return nil, status.Error(codes.InvalidArgument, "Invalid username or password")

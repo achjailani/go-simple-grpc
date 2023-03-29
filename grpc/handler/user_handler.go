@@ -10,7 +10,7 @@ import (
 
 // GetUser is a function
 func (c *Handler) GetUser(ctx context.Context, r *foo.UserByIDRequest) (*foo.User, error) {
-	usr, err := c.dep.repo.User.Find(ctx, int(r.GetId()))
+	usr, err := c.Dependency.Repo.User.Find(ctx, int(r.GetId()))
 
 	if err != nil {
 		return nil, status.Error(codes.NotFound, "Data Not Found")
@@ -30,7 +30,7 @@ func (c *Handler) GetUser(ctx context.Context, r *foo.UserByIDRequest) (*foo.Use
 func (c *Handler) UpdateUser(ctx context.Context, payload *foo.UserUpdateRequest) (*foo.User, error) {
 	userId := int(payload.GetId())
 
-	if _, err := c.dep.repo.User.Find(ctx, userId); err != nil {
+	if _, err := c.Dependency.Repo.User.Find(ctx, userId); err != nil {
 		return nil, status.Error(codes.NotFound, "Data Not Found")
 	}
 
@@ -39,7 +39,7 @@ func (c *Handler) UpdateUser(ctx context.Context, payload *foo.UserUpdateRequest
 		Username: payload.GetUsername(),
 	}
 
-	err := c.dep.repo.User.Update(ctx, userId, userData)
+	err := c.Dependency.Repo.User.Update(ctx, userId, userData)
 	if err != nil {
 		return nil, err
 	}
@@ -62,7 +62,7 @@ func (c *Handler) CreateUser(ctx context.Context, r *foo.UserCreateRequest) (*fo
 		Password: r.GetPassword(),
 	}
 
-	err := c.dep.repo.User.Create(ctx, &usr)
+	err := c.Dependency.Repo.User.Create(ctx, &usr)
 
 	if err != nil {
 		return nil, err
@@ -80,7 +80,7 @@ func (c *Handler) CreateUser(ctx context.Context, r *foo.UserCreateRequest) (*fo
 
 // GetUserList is function
 func (c *Handler) GetUserList(ctx context.Context, _ *foo.UserListQuery) (*foo.Users, error) {
-	serv, err := c.dep.repo.User.Get(ctx)
+	serv, err := c.Dependency.Repo.User.Get(ctx)
 
 	if err != nil {
 		return nil, err
@@ -107,11 +107,11 @@ func (c *Handler) GetUserList(ctx context.Context, _ *foo.UserListQuery) (*foo.U
 func (c *Handler) DeleteUser(ctx context.Context, r *foo.UserByIDRequest) (*foo.UserDeleteResponse, error) {
 	userId := int(r.GetId())
 
-	if _, err := c.dep.repo.User.Find(ctx, userId); err != nil {
+	if _, err := c.Dependency.Repo.User.Find(ctx, userId); err != nil {
 		return nil, status.Error(codes.NotFound, "Data not found")
 	}
 
-	err := c.dep.repo.User.Delete(ctx, int(r.GetId()))
+	err := c.Dependency.Repo.User.Delete(ctx, int(r.GetId()))
 
 	if err != nil {
 		return nil, err
