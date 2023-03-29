@@ -14,22 +14,34 @@ type Interface interface {
 	foo.LogServiceServer
 }
 
-// Handler is struct
-type Handler struct {
+// Dependency collects dependencies needed by handler
+type Dependency struct {
 	config *config.Config
 	repo   *service.Repositories
+}
 
+// CoreGRPCService collects grpc service server
+type CoreGRPCService struct {
 	foo.UnimplementedUserServiceServer
 	foo.UnimplementedHelloServer
 	foo.UnimplementedAuthServer
 	foo.UnimplementedLogServiceServer
 }
 
+// Handler is struct
+type Handler struct {
+	dep *Dependency
+
+	CoreGRPCService
+}
+
 // NewHandler is a constructor
 func NewHandler(conf *config.Config, repo *service.Repositories) *Handler {
 	return &Handler{
-		config: conf,
-		repo:   repo,
+		dep: &Dependency{
+			config: conf,
+			repo:   repo,
+		},
 	}
 }
 

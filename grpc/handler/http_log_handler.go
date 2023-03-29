@@ -40,7 +40,7 @@ func (c *Handler) SaveHttpLog(ctx context.Context, r *foo.SaveHttpLogRequest) (*
 		Method: r.GetMethod(),
 	}
 
-	err := c.repo.HttpLog.Save(ctx, &lg)
+	err := c.dep.repo.HttpLog.Save(ctx, &lg)
 	if err != nil {
 		return nil, err
 	}
@@ -63,7 +63,7 @@ func (c *Handler) FindHttpLog(ctx context.Context, r *foo.FindHttpLogRequest) (*
 		return nil, errC
 	}
 
-	lg, err := c.repo.HttpLog.Find(ctx, int(id))
+	lg, err := c.dep.repo.HttpLog.Find(ctx, int(id))
 	if err != nil {
 		return nil, err
 	}
@@ -81,7 +81,7 @@ func (c *Handler) FindHttpLog(ctx context.Context, r *foo.FindHttpLogRequest) (*
 
 // GetHttpLog is a function to retrieve list of data
 func (c *Handler) GetHttpLog(ctx context.Context, _ *foo.GetHttpLogRequest) (*foo.HttpLogs, error) {
-	r, err := c.repo.HttpLog.Get(ctx)
+	r, err := c.dep.repo.HttpLog.Get(ctx)
 	if err != nil {
 		return nil, err
 	}
