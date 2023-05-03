@@ -10,10 +10,6 @@ func NewConfig() *zap.Config {
 	env := os.Getenv("APP_ENV")
 
 	cnf := &zap.Config{
-		Level:            zap.NewAtomicLevelAt(zap.DebugLevel),
-		Development:      true,
-		Encoding:         "console",
-		EncoderConfig:    zap.NewDevelopmentEncoderConfig(),
 		OutputPaths:      []string{"stderr"},
 		ErrorOutputPaths: []string{"stderr"},
 	}
@@ -23,8 +19,11 @@ func NewConfig() *zap.Config {
 		cnf.Development = false
 		cnf.Encoding = "json"
 		cnf.EncoderConfig = zap.NewProductionEncoderConfig()
-		cnf.OutputPaths = []string{"stderr"}
-		cnf.ErrorOutputPaths = []string{"stderr"}
+	} else {
+		cnf.Level = zap.NewAtomicLevelAt(zap.DebugLevel)
+		cnf.Development = true
+		cnf.Encoding = "console"
+		cnf.EncoderConfig = zap.NewDevelopmentEncoderConfig()
 	}
 
 	return cnf
