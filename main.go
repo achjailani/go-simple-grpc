@@ -31,10 +31,12 @@ func main() {
 	}
 
 	repo := service.NewDBService(db)
+	loggr := logger.New(logger.NewConfig())
 
 	command := cmd.NewCommand(
 		cmd.WithConfig(conf),
 		cmd.WithRepo(repo),
+		cmd.WithLogger(loggr),
 	)
 
 	app := cmd.NewCLI()
@@ -44,8 +46,6 @@ func main() {
 	if errClient != nil {
 		log.Fatalf("grpc client unable connect to server, %v", errClient)
 	}
-
-	loggr := logger.New(logger.NewConfig())
 
 	grpcClient := client.NewGRPCClient(clientConn)
 	app.Action = func(ctx *cli.Context) error {

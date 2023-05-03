@@ -3,6 +3,7 @@ package cmd
 import (
 	"github/achjailani/go-simple-grpc/config"
 	"github/achjailani/go-simple-grpc/domain/service"
+	"github/achjailani/go-simple-grpc/pkg/logger"
 )
 
 // CommandOption is an option type
@@ -19,5 +20,12 @@ func WithConfig(conf *config.Config) CommandOption {
 func WithRepo(repo *service.Repositories) CommandOption {
 	return func(c *Command) {
 		c.repo = repo
+	}
+}
+
+// WithLogger is a function option
+func WithLogger(loggr *logger.Logger) CommandOption {
+	return func(c *Command) {
+		c.logger = loggr
 	}
 }
