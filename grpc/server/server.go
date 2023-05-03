@@ -5,6 +5,7 @@ import (
 	"github/achjailani/go-simple-grpc/domain/service"
 	"github/achjailani/go-simple-grpc/grpc/handler"
 	"github/achjailani/go-simple-grpc/grpc/interceptor"
+	"github/achjailani/go-simple-grpc/pkg/logger"
 	"github/achjailani/go-simple-grpc/proto/foo"
 	"google.golang.org/grpc"
 	"google.golang.org/grpc/reflection"
@@ -14,13 +15,15 @@ import (
 type Server struct {
 	config *config.Config
 	repo   *service.Repositories
+	logger *logger.Logger
 }
 
 // NewGRPCServer is constructor
-func NewGRPCServer(conf *config.Config, repo *service.Repositories) *Server {
+func NewGRPCServer(conf *config.Config, repo *service.Repositories, loggr *logger.Logger) *Server {
 	return &Server{
 		config: conf,
 		repo:   repo,
+		logger: loggr,
 	}
 }
 
@@ -37,7 +40,7 @@ func (s *Server) Run(port int) error {
 		),
 	)
 
-	handlers := handler.NewHandler(s.config, s.repo)
+	handlers := handler.NewHandler(s.config, s.repo, s.logger)
 
 	// register service server
 	foo.RegisterUserServiceServer(server, handlers)

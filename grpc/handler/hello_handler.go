@@ -13,5 +13,7 @@ func (c *Handler) SayHello(_ context.Context, r *foo.HelloRequest) (*foo.HelloRe
 
 // Ping is a function
 func (c *Handler) Ping(_ context.Context, _ *foo.PingRequest) (*foo.PingReply, error) {
+	c.Dependency.Logger.Log.Info("successfully")
+
 	return &foo.PingReply{Redis: "Ok", Db: "Ok"}, nil
 }

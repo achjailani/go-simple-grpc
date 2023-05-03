@@ -4,12 +4,14 @@ import (
 	"github.com/urfave/cli/v2"
 	"github/achjailani/go-simple-grpc/config"
 	"github/achjailani/go-simple-grpc/domain/service"
+	"github/achjailani/go-simple-grpc/pkg/logger"
 )
 
 // Command is a struct
 type Command struct {
-	conf *config.Config
-	repo *service.Repositories
+	conf   *config.Config
+	repo   *service.Repositories
+	logger *logger.Logger
 
 	CLI []*cli.Command
 }
