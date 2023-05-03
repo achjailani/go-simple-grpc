@@ -2,9 +2,10 @@ package cmd
 
 import (
 	"fmt"
-	"github.com/urfave/cli/v2"
 	"github/achjailani/go-simple-grpc/grpc/server"
 	"github/achjailani/go-simple-grpc/infrastructure/persistence"
+
+	"github.com/urfave/cli/v2"
 )
 
 // newGRPCServer is a method command cli to run grpc
