@@ -8,6 +8,7 @@ import (
 	"github/achjailani/go-simple-grpc/domain/service"
 	"github/achjailani/go-simple-grpc/grpc/client"
 	"github/achjailani/go-simple-grpc/infrastructure/persistence"
+	"github/achjailani/go-simple-grpc/pkg/logger"
 	"github/achjailani/go-simple-grpc/rest"
 	"github/achjailani/go-simple-grpc/rest/route"
 	"log"
@@ -44,12 +45,15 @@ func main() {
 		log.Fatalf("grpc client unable connect to server, %v", errClient)
 	}
 
+	loggr := logger.New(logger.NewConfig())
+
 	grpcClient := client.NewGRPCClient(clientConn)
 	app.Action = func(ctx *cli.Context) error {
 		router := route.NewRouter(
 			route.WithConfig(conf),
 			route.WithRepository(repo),
 			route.WithGRPCClient(grpcClient),
+			route.WithLogger(loggr),
 		).Init()
 
 		shutdownTimeout := 10 * time.Second

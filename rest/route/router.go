@@ -5,6 +5,7 @@ import (
 	"github/achjailani/go-simple-grpc/config"
 	"github/achjailani/go-simple-grpc/domain/service"
 	"github/achjailani/go-simple-grpc/grpc/client"
+	"github/achjailani/go-simple-grpc/pkg/logger"
 	"github/achjailani/go-simple-grpc/rest/handler"
 	"github/achjailani/go-simple-grpc/rest/middleware"
 )
@@ -30,6 +31,13 @@ func WithGRPCClient(gClient *client.GRPCClient) RouterOption {
 	}
 }
 
+// WithLogger is a function
+func WithLogger(loggr *logger.Logger) RouterOption {
+	return func(r *Router) {
+		r.logger = loggr
+	}
+}
+
 // Init is a function
 func (r *Router) Init() *gin.Engine {
 	gin.SetMode(gin.ReleaseMode)
@@ -37,7 +45,7 @@ func (r *Router) Init() *gin.Engine {
 	e := gin.Default()
 	e.Use(middleware.Logger())
 
-	hand := handler.NewHandler(r.repo, r.client)
+	hand := handler.NewHandler(r.repo, r.client, r.logger)
 
 	httpLog := handler.NewRequestLogHandler(hand)
 	hello := handler.NewHelloHandler(hand)
