@@ -19,7 +19,7 @@ func NewHelloHandler(h *Handler) *HelloHandler {
 }
 
 // SayHello is a method to handle
-func (r *HelloHandler) SayHello(c *gin.Context) {
+func (hdl *HelloHandler) SayHello(c *gin.Context) {
 	var body HelloRequest
 	if err := c.ShouldBind(&body); err != nil {
 		c.AbortWithStatusJSON(http.StatusUnprocessableEntity, map[string]string{
@@ -28,7 +28,7 @@ func (r *HelloHandler) SayHello(c *gin.Context) {
 		return
 	}
 
-	rsp, err := r.client.SayHello(c, body.text)
+	rsp, err := hdl.Dependency.GRPCClient.SayHello(c, body.text)
 	if err != nil {
 		c.AbortWithStatusJSON(http.StatusInternalServerError, map[string]string{
 			"error": fmt.Sprintf("%v", err),
@@ -43,8 +43,8 @@ func (r *HelloHandler) SayHello(c *gin.Context) {
 }
 
 // Ping is a method to handle
-func (r *HelloHandler) Ping(c *gin.Context) {
-	rsp, err := r.client.Ping(c)
+func (hdl *HelloHandler) Ping(c *gin.Context) {
+	rsp, err := hdl.Dependency.GRPCClient.Ping(c)
 	if err != nil {
 		c.AbortWithStatusJSON(http.StatusUnprocessableEntity, map[string]string{
 			"error": fmt.Sprintf("%v", err),

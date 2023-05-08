@@ -2,40 +2,25 @@ package route
 
 import (
 	"github.com/gin-gonic/gin"
-	"github/achjailani/go-simple-grpc/config"
-	"github/achjailani/go-simple-grpc/domain/service"
-	"github/achjailani/go-simple-grpc/grpc/client"
-	"github/achjailani/go-simple-grpc/pkg/logger"
+	"github/achjailani/go-simple-grpc/infrastructure/dependency"
 	"github/achjailani/go-simple-grpc/rest/handler"
 	"github/achjailani/go-simple-grpc/rest/middleware"
 )
 
-// WithConfig is function
-func WithConfig(config *config.Config) RouterOption {
-	return func(r *Router) {
-		r.config = config
-	}
+// Router is a struct contains dependencies needed
+type Router struct {
+	*dependency.Dependency
 }
 
-// WithRepository is function
-func WithRepository(repo *service.Repositories) RouterOption {
-	return func(r *Router) {
-		r.repo = repo
-	}
-}
+// NewRouter is a constructor will initialize Router.
+func NewRouter(options ...Option) *Router {
+	router := &Router{}
 
-// WithGRPCClient is function
-func WithGRPCClient(gClient *client.GRPCClient) RouterOption {
-	return func(r *Router) {
-		r.client = gClient
+	for _, opt := range options {
+		opt(router)
 	}
-}
 
-// WithLogger is a function
-func WithLogger(loggr *logger.Logger) RouterOption {
-	return func(r *Router) {
-		r.logger = loggr
-	}
+	return router
 }
 
 // Init is a function
@@ -45,7 +30,7 @@ func (r *Router) Init() *gin.Engine {
 	e := gin.Default()
 	e.Use(middleware.Logger())
 
-	hand := handler.NewHandler(r.repo, r.client, r.logger)
+	hand := handler.NewHandler(r.Dependency)
 
 	httpLog := handler.NewRequestLogHandler(hand)
 	hello := handler.NewHelloHandler(hand)

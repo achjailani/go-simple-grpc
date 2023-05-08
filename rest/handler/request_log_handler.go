@@ -17,7 +17,7 @@ func NewRequestLogHandler(h *Handler) *RequestLogHandler {
 	return &RequestLogHandler{h}
 }
 
-func (r *RequestLogHandler) Create(c *gin.Context) {
+func (hdl *RequestLogHandler) Create(c *gin.Context) {
 	payloads := []*foo.SaveHttpLogRequest{
 		{Ip: "1.1.1.1", Path: "/user", Method: "POST"},
 		{Ip: "1.1.1.2", Path: "/user/1", Method: "GET"},
@@ -31,7 +31,7 @@ func (r *RequestLogHandler) Create(c *gin.Context) {
 		{Ip: "1.1.1.10", Path: "/user", Method: "POST"},
 	}
 
-	err := r.client.SaveHttpLog(c, payloads)
+	err := hdl.Dependency.GRPCClient.SaveHttpLog(c, payloads)
 	if err != nil {
 		c.JSON(http.StatusUnprocessableEntity, gin.H{
 			"error": fmt.Sprintf("%v", err),

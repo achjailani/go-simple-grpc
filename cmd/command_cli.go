@@ -14,8 +14,12 @@ func (cmd *Command) newGRPCServer() *cli.Command {
 		Name:  "grpc:start",
 		Usage: "A command to run gRPC server",
 		Action: func(c *cli.Context) error {
-			grpcServer := server.NewGRPCServer(cmd.conf, cmd.repo, cmd.logger)
-			err := grpcServer.Run(cmd.conf.GRPCPort)
+			grpcServer := server.NewGRPCServer(
+				cmd.Dependency.Cfg,
+				cmd.Dependency.Repo,
+				cmd.Dependency.Logger,
+			)
+			err := grpcServer.Run(cmd.Dependency.Cfg.GRPCPort)
 			if err != nil {
 				return err
 			}
@@ -31,7 +35,7 @@ func (cmd *Command) newDBMigrate() *cli.Command {
 		Name:  "db:migrate",
 		Usage: "A command to run database migration",
 		Action: func(c *cli.Context) error {
-			db, errConn := persistence.NewDBConnection(cmd.conf.DBConfig)
+			db, errConn := persistence.NewDBConnection(cmd.Dependency.Cfg.DBConfig)
 			if errConn != nil {
 				return fmt.Errorf("unable to connect to database: %w", errConn)
 			}

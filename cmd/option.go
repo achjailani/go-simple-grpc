@@ -1,31 +1,15 @@
 package cmd
 
 import (
-	"github/achjailani/go-simple-grpc/config"
-	"github/achjailani/go-simple-grpc/domain/service"
-	"github/achjailani/go-simple-grpc/pkg/logger"
+	"github/achjailani/go-simple-grpc/infrastructure/dependency"
 )
 
-// CommandOption is an option type
-type CommandOption func(c *Command)
+// Option is an option type
+type Option func(c *Command)
 
-// WithConfig is a function of command option
-func WithConfig(conf *config.Config) CommandOption {
+// WithDependency is a function option
+func WithDependency(dep *dependency.Dependency) Option {
 	return func(c *Command) {
-		c.conf = conf
-	}
-}
-
-// WithRepo is a function of command option
-func WithRepo(repo *service.Repositories) CommandOption {
-	return func(c *Command) {
-		c.repo = repo
-	}
-}
-
-// WithLogger is a function option
-func WithLogger(loggr *logger.Logger) CommandOption {
-	return func(c *Command) {
-		c.logger = loggr
+		c.Dependency = dep
 	}
 }

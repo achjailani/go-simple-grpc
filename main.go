@@ -7,6 +7,7 @@ import (
 	"github/achjailani/go-simple-grpc/config"
 	"github/achjailani/go-simple-grpc/domain/service"
 	"github/achjailani/go-simple-grpc/grpc/client"
+	"github/achjailani/go-simple-grpc/infrastructure/dependency"
 	"github/achjailani/go-simple-grpc/infrastructure/persistence"
 	"github/achjailani/go-simple-grpc/pkg/logger"
 	"github/achjailani/go-simple-grpc/rest"
@@ -34,9 +35,11 @@ func main() {
 	loggr := logger.New(logger.NewConfig())
 
 	command := cmd.NewCommand(
-		cmd.WithConfig(conf),
-		cmd.WithRepo(repo),
-		cmd.WithLogger(loggr),
+		cmd.WithDependency(dependency.New(
+			dependency.WithConfig(conf),
+			dependency.WithRepository(repo),
+			dependency.WithLogger(loggr),
+		)),
 	)
 
 	app := cmd.NewCLI()
@@ -50,10 +53,12 @@ func main() {
 	grpcClient := client.NewGRPCClient(clientConn)
 	app.Action = func(ctx *cli.Context) error {
 		router := route.NewRouter(
-			route.WithConfig(conf),
-			route.WithRepository(repo),
-			route.WithGRPCClient(grpcClient),
-			route.WithLogger(loggr),
+			route.WithDependency(dependency.New(
+				dependency.WithConfig(conf),
+				dependency.WithRepository(repo),
+				dependency.WithLogger(loggr),
+				dependency.WithGRPCClient(grpcClient),
+			)),
 		).Init()
 
 		shutdownTimeout := 10 * time.Second

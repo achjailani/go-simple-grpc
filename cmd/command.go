@@ -2,22 +2,18 @@ package cmd
 
 import (
 	"github.com/urfave/cli/v2"
-	"github/achjailani/go-simple-grpc/config"
-	"github/achjailani/go-simple-grpc/domain/service"
-	"github/achjailani/go-simple-grpc/pkg/logger"
+	"github/achjailani/go-simple-grpc/infrastructure/dependency"
 )
 
 // Command is a struct
 type Command struct {
-	conf   *config.Config
-	repo   *service.Repositories
-	logger *logger.Logger
+	*dependency.Dependency
 
 	CLI []*cli.Command
 }
 
 // NewCommand is a constructor
-func NewCommand(options ...CommandOption) *Command {
+func NewCommand(options ...Option) *Command {
 	cmd := &Command{}
 
 	for _, op := range options {
