@@ -17,6 +17,22 @@ type DBConfig struct {
 	DBLog      bool
 }
 
+// RedisConfig is a struct which hold redis config fields
+type RedisConfig struct {
+	RedisHost     string
+	RedisPort     string
+	RedisPassword string
+	RedisDB       int
+}
+
+// RedisTestConfig is a struct which hold redis test config fields
+type RedisTestConfig struct {
+	RedisHost     string
+	RedisPort     string
+	RedisPassword string
+	RedisDB       int
+}
+
 type Config struct {
 	AppName     string
 	AppPort     int
@@ -24,7 +40,10 @@ type Config struct {
 	AppLang     string
 	AppTimeZone string
 	GRPCPort    int
+	TestMode    bool
 	DBConfig
+	RedisConfig
+	RedisTestConfig
 }
 
 func New() *Config {
@@ -35,6 +54,7 @@ func New() *Config {
 		AppLang:     getEnv("APP_LANG", "en"),
 		AppTimeZone: getEnv("APP_TIMEZONE", ""),
 		GRPCPort:    getEnvAsInt("GRPC_PORT", 9000),
+		TestMode:    getEnvAsBool("TEST_MODE", false),
 		DBConfig: DBConfig{
 			DBDriver:   getEnv("DB_DRIVER", "postgres"),
 			DBHost:     getEnv("DB_HOSt", "localhost"),
@@ -44,6 +64,18 @@ func New() *Config {
 			DBPassword: getEnv("DB_PASS", ""),
 			DBTimeZone: getEnv("APP_TIMEZONE", "Asia/Jakarta"),
 			DBLog:      getEnvAsBool("ENABLE_LOGGER", true),
+		},
+		RedisConfig: RedisConfig{
+			RedisHost:     getEnv("REDIS_HOST", "localhost"),
+			RedisPort:     getEnv("REDIS_PORT", "6379"),
+			RedisPassword: getEnv("REDIS_PASSWORD", ""),
+			RedisDB:       getEnvAsInt("REDIS_DB", 0),
+		},
+		RedisTestConfig: RedisTestConfig{
+			RedisHost:     getEnv("TEST_REDIS_HOST", "localhost"),
+			RedisPort:     getEnv("TEST_REDIS_HOST", "6379"),
+			RedisPassword: getEnv("TEST_REDIS_HOST", ""),
+			RedisDB:       getEnvAsInt("TEST_REDIS_HOST", 0),
 		},
 	}
 }
