@@ -16,6 +16,7 @@ import (
 )
 
 type BoxTest struct {
+	Ctx context.Context
 	*dependency.Dependency
 }
 
@@ -31,6 +32,7 @@ func Init() *BoxTest {
 	}
 
 	cfg := config.New()
+	ctx := context.Background()
 
 	db, errConn := persistence.NewDBConnection(cfg)
 	if errConn != nil {
@@ -38,7 +40,7 @@ func Init() *BoxTest {
 	}
 
 	drop := database.NewDrop(db)
-	errDrop := drop.Reset(context.Background())
+	errDrop := drop.Reset(ctx)
 	if errDrop != nil {
 		log.Fatalf("err drop: %v", errDrop)
 	}
@@ -47,6 +49,7 @@ func Init() *BoxTest {
 	loggr := logger.New(logger.NewConfig())
 
 	return &BoxTest{
+		Ctx: ctx,
 		Dependency: dependency.New(
 			dependency.WithConfig(cfg),
 			dependency.WithRepository(repo),

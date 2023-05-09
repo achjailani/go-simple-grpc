@@ -34,7 +34,7 @@ func (op *Drop) DropPostgresql(ctx context.Context) error {
 // Reset is function drop all tables & recreate them
 func (op *Drop) Reset(ctx context.Context) error {
 	// disable foreign key constraint
-	errDis := op.db.WithContext(context.Background()).Exec("DROP SCHEMA public CASCADE;").Error
+	errDis := op.db.WithContext(ctx).Exec("DROP SCHEMA public CASCADE;").Error
 	if errDis != nil {
 		return errDis
 	}
@@ -45,7 +45,7 @@ func (op *Drop) Reset(ctx context.Context) error {
 	}
 
 	// enable foreign key constraint
-	errEne := op.db.WithContext(context.Background()).Exec("CREATE SCHEMA public;").Error
+	errEne := op.db.WithContext(ctx).Exec("CREATE SCHEMA public;").Error
 	if errEne != nil {
 		return errEne
 	}
