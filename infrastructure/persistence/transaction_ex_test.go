@@ -16,7 +16,7 @@ import (
 // There 4 isolation levels which are (READ UNCOMMITTED, READ COMMITTED, REPEATABLE READ, SERIALIZABLE)
 // Postgres has 3 (READ UNCOMMITTED and READ COMMITTED are equal)
 
-func Test_Gorm_ReadCommitted_Or_UnCommitted_ReadOp(t *testing.T) {
+func Test_IsoLevel_ReadCommitted_Or_UnCommitted_ReadOp(t *testing.T) {
 	box := tests.Init()
 	ctx := box.Ctx
 
@@ -81,7 +81,7 @@ func Test_Gorm_ReadCommitted_Or_UnCommitted_ReadOp(t *testing.T) {
 	assert.NoError(t, err)
 }
 
-func Test_Gorm_RepeatableRead_WriteOp(t *testing.T) {
+func Test_IsoLevel_RepeatableRead_WriteOp(t *testing.T) {
 	box := tests.Init()
 	ctx := box.Ctx
 
