@@ -42,6 +42,7 @@ type Config struct {
 	GRPCPort    int
 	TestMode    bool
 	DBConfig
+	DBTestConfig DBConfig
 	RedisConfig
 	RedisTestConfig
 }
@@ -64,6 +65,16 @@ func New() *Config {
 			DBPassword: getEnv("DB_PASS", ""),
 			DBTimeZone: getEnv("APP_TIMEZONE", "Asia/Jakarta"),
 			DBLog:      getEnvAsBool("ENABLE_LOGGER", true),
+		},
+		DBTestConfig: DBConfig{
+			DBDriver:   getEnv("TEST_DB_DRIVER", "postgres"),
+			DBHost:     getEnv("TEST_DB_HOSt", "localhost"),
+			DBPort:     getEnv("TEST_DB_PORT", "5432"),
+			DBName:     getEnv("TEST_DB_NAME", "db"),
+			DBUser:     getEnv("TEST_DB_USER", "postgres"),
+			DBPassword: getEnv("TEST_DB_PASS", ""),
+			DBTimeZone: getEnv("APP_TIMEZONE", "Asia/Jakarta"),
+			DBLog:      getEnvAsBool("ENABLE_LOGGER", false),
 		},
 		RedisConfig: RedisConfig{
 			RedisHost:     getEnv("REDIS_HOST", "localhost"),

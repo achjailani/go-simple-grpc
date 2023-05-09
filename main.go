@@ -26,7 +26,7 @@ func main() {
 
 	conf := config.New()
 
-	db, errConn := persistence.NewDBConnection(conf.DBConfig)
+	db, errConn := persistence.NewDBConnection(conf)
 	if errConn != nil {
 		log.Fatalf("unable connect to database, %v", errConn)
 	}

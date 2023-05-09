@@ -35,7 +35,7 @@ func (cmd *Command) newDBMigrate() *cli.Command {
 		Name:  "db:migrate",
 		Usage: "A command to run database migration",
 		Action: func(c *cli.Context) error {
-			db, errConn := persistence.NewDBConnection(cmd.Dependency.Cfg.DBConfig)
+			db, errConn := persistence.NewDBConnection(cmd.Dependency.Cfg)
 			if errConn != nil {
 				return fmt.Errorf("unable to connect to database: %w", errConn)
 			}

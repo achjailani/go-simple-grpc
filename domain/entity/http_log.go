@@ -1,6 +1,7 @@
 package entity
 
 import (
+	"github/achjailani/go-simple-grpc/domain/contract"
 	"gorm.io/gorm"
 	"time"
 )
@@ -15,3 +16,20 @@ type HttpLog struct {
 	UpdatedAt time.Time      `json:"updated_at"`
 	DeletedAt gorm.DeletedAt `json:"deleted_at"`
 }
+
+// TableName is a method
+func (u HttpLog) TableName() string {
+	return "http_logs"
+}
+
+// FilterableFields is a method
+func (u HttpLog) FilterableFields() []interface{} {
+	return []interface{}{"id", "ip", "path", "method"}
+}
+
+// TimeFields is a method
+func (u HttpLog) TimeFields() []interface{} {
+	return []interface{}{"created_at", "updated_at", "deleted_at"}
+}
+
+var _ contract.EntityInterface = &HttpLog{}

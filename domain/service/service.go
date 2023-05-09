@@ -9,7 +9,7 @@ import (
 // Repositories is a struct
 type Repositories struct {
 	User      repository.UserRepositoryInterface
-	AuthToken repository.AuthTokenRepository
+	AuthToken repository.AuthTokenRepoInterface
 	HttpLog   repository.HttpLogRepositoryInterface
 	DB        *gorm.DB
 }

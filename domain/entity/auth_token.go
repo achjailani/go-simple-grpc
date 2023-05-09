@@ -1,11 +1,13 @@
 package entity
 
 import (
+	"github/achjailani/go-simple-grpc/domain/contract"
 	"time"
 
 	"gorm.io/gorm"
 )
 
+// AuthToken is a struct
 type AuthToken struct {
 	ID           uint      `gorm:"not null;uniqueIndex;primaryKey"`
 	UserID       uint      `gorm:"not null" json:"user_id"`
@@ -16,3 +18,20 @@ type AuthToken struct {
 	UpdatedAt    time.Time `json:"updated_at"`
 	DeletedAt    gorm.DeletedAt
 }
+
+// TableName is a method
+func (u AuthToken) TableName() string {
+	return "http_logs"
+}
+
+// FilterableFields is a method
+func (u AuthToken) FilterableFields() []interface{} {
+	return []interface{}{"id", "user_id", "access_token", "refresh_token"}
+}
+
+// TimeFields is a method
+func (u AuthToken) TimeFields() []interface{} {
+	return []interface{}{"expired_at", "created_at", "updated_at", "deleted_at"}
+}
+
+var _ contract.EntityInterface = &AuthToken{}
