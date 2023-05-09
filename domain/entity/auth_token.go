@@ -21,7 +21,7 @@ type AuthToken struct {
 
 // TableName is a method
 func (u AuthToken) TableName() string {
-	return "http_logs"
+	return "auth_tokens"
 }
 
 // FilterableFields is a method
