@@ -1,11 +1,14 @@
 package persistence_test
 
 import (
+	"context"
 	"database/sql"
+	"fmt"
 	"github.com/jaswdr/faker"
 	"github.com/stretchr/testify/assert"
 	"github/achjailani/go-simple-grpc/domain/entity"
 	"github/achjailani/go-simple-grpc/tests"
+	"gorm.io/gorm"
 	"strconv"
 	"strings"
 	"testing"
@@ -168,4 +171,100 @@ func Test_IsoLevel_RepeatableRead_WriteOp(t *testing.T) {
 
 	err := tx.Commit().Error
 	assert.NoError(t, err)
+}
+
+func Test_IsoLevel_Serializable_WriteOp(t *testing.T) {
+	box := tests.Init()
+	ctx := box.Ctx
+
+	db := box.Repo.DB
+	db2 := box.Repo.DB
+
+	ids := []uint{1, 2, 3, 4, 5}
+
+	tx := db.Begin(&sql.TxOptions{
+		Isolation: sql.LevelSerializable,
+	})
+
+	tx2 := db2.Begin(&sql.TxOptions{
+		Isolation: sql.LevelSerializable,
+	})
+
+	var (
+		latestName     = "Jacop"
+		latestUsername = "jacop123"
+
+		latestName2     = "Jackpad"
+		latestUsername2 = "jackpad123"
+	)
+
+	t.Run("it should be valid running seed", func(t *testing.T) {
+		err := seedTxUsers(ids, db)
+
+		assert.NoError(t, err)
+	})
+
+	t.Run("it should be valid", func(t *testing.T) {
+		var r []*entity.User
+
+		err := tx.WithContext(ctx).Find(&r, ids).Error
+
+		assert.NoError(t, err)
+		assert.NotEmpty(t, r)
+		assert.Equal(t, len(ids), len(r))
+	})
+
+	t.Run("it should be valid when updating from another transaction", func(t *testing.T) {
+		err := tx2.WithContext(ctx).Where("id = ?", ids[1]).Updates(&entity.User{
+			Name:     latestName,
+			Username: latestUsername,
+		}).Error
+
+		assert.NoError(t, err)
+
+		err = tx2.Commit().Error
+
+		assert.NoError(t, err)
+	})
+
+	t.Run("it should return err, updating from main transaction", func(t *testing.T) {
+		err := tx.WithContext(ctx).Where("id = ?", ids[4]).Updates(&entity.User{
+			Name:     latestName2,
+			Username: latestUsername2,
+		}).Error
+
+		assert.Error(t, err)
+	})
+
+	t.Run("it should not be valid commit", func(t *testing.T) {
+		err := tx.Commit().Error
+
+		assert.Error(t, err)
+	})
+}
+
+func seedTxUsers(ids []uint, db *gorm.DB) error {
+
+	f := faker.New()
+	var preps []*entity.User
+
+	for idx, id := range ids {
+		preps = append(preps, &entity.User{
+			ID:       id,
+			Name:     f.Person().Name(),
+			Username: strings.Join(strings.Split(strings.ToLower(f.Person().Name()), " "), "_"),
+			Password: strings.Join(append(strings.Split(f.Person().Name(), " "), strconv.Itoa(f.RandomNumber(3))), ""),
+		})
+
+		err := db.WithContext(context.Background()).Create(preps[idx]).Error
+		if err != nil {
+			return err
+		}
+	}
+
+	for _, r := range preps {
+		fmt.Printf("ID: %d, NAME: %s, USERNAME: %s\n", r.ID, r.Name, r.Username)
+	}
+
+	return nil
 }
