@@ -153,6 +153,17 @@ func Test_IsoLevel_RepeatableRead_WriteOp(t *testing.T) {
 		assert.Equal(t, name, usr.Name)
 	})
 
+	t.Run("It should be valid inserting http logs: from another transaction", func(t *testing.T) {
+		err := db2.WithContext(ctx).
+			Create(&entity.HttpLog{
+				Ip:     f.Internet().Ipv4(),
+				Path:   f.Internet().User(),
+				Method: f.Internet().HTTPMethod(),
+			}).Error
+
+		assert.NoError(t, err)
+	})
+
 	time.Sleep(3 * time.Second)
 
 	err := tx.Commit().Error
