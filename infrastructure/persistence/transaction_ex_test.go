@@ -222,22 +222,25 @@ func Test_IsoLevel_Serializable_WriteOp(t *testing.T) {
 
 		assert.NoError(t, err)
 
-		err = tx2.Commit().Error
-
-		assert.NoError(t, err)
 	})
 
-	t.Run("it should return err, updating from main transaction", func(t *testing.T) {
+	t.Run("it should return no error, updating from main transaction", func(t *testing.T) {
 		err := tx.WithContext(ctx).Where("id = ?", ids[4]).Updates(&entity.User{
 			Name:     latestName2,
 			Username: latestUsername2,
 		}).Error
 
-		assert.Error(t, err)
+		assert.NoError(t, err)
 	})
 
-	t.Run("it should not be valid commit", func(t *testing.T) {
+	t.Run("it should valid valid commit", func(t *testing.T) {
 		err := tx.Commit().Error
+
+		assert.NoError(t, err)
+	})
+
+	t.Run("it should error tx 2", func(t *testing.T) {
+		err := tx2.Commit().Error
 
 		assert.Error(t, err)
 	})
