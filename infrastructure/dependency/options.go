@@ -4,6 +4,7 @@ import (
 	"github/achjailani/go-simple-grpc/config"
 	"github/achjailani/go-simple-grpc/domain/service"
 	"github/achjailani/go-simple-grpc/grpc/client"
+	"github/achjailani/go-simple-grpc/infrastructure/cache"
 	"github/achjailani/go-simple-grpc/pkg/logger"
 )
 
@@ -45,5 +46,12 @@ func WithLogger(loggr *logger.Logger) Option {
 func WithGRPCClient(gClient *client.GRPCClient) Option {
 	return optionFunc(func(dep *Dependency) {
 		dep.GRPCClient = gClient
+	})
+}
+
+// WithCache is an option function
+func WithCache(c *cache.Cache) Option {
+	return optionFunc(func(dep *Dependency) {
+		dep.Cache = c
 	})
 }
