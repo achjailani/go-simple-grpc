@@ -33,6 +33,24 @@ type RedisTestConfig struct {
 	RedisDB       int
 }
 
+// CacheConfig is a cache config for test
+type CacheConfig struct {
+	CacheHost     string
+	CachePort     string
+	CacheUsername string
+	CachePassword string
+	CacheDB       int
+}
+
+// TestCacheConfig is a cache config for test
+type TestCacheConfig struct {
+	CacheHost     string
+	CachePort     string
+	CacheUsername string
+	CachePassword string
+	CacheDB       int
+}
+
 type Config struct {
 	AppName     string
 	AppPort     int
@@ -45,6 +63,8 @@ type Config struct {
 	DBTestConfig DBConfig
 	RedisConfig
 	RedisTestConfig
+	CacheConfig
+	TestCacheConfig
 }
 
 func New() *Config {
@@ -87,6 +107,20 @@ func New() *Config {
 			RedisPort:     getEnv("TEST_REDIS_HOST", "6379"),
 			RedisPassword: getEnv("TEST_REDIS_HOST", ""),
 			RedisDB:       getEnvAsInt("TEST_REDIS_HOST", 0),
+		},
+		CacheConfig: CacheConfig{
+			CacheHost:     getEnv("CACHE_HOST", "127.0.0.1"),
+			CachePort:     getEnv("CACHE_PORT", "6379"),
+			CacheUsername: getEnv("CACHE_USERNAME", ""),
+			CachePassword: getEnv("CACHE_PASSWORD", ""),
+			CacheDB:       getEnvAsInt("CACHE_DB", 0),
+		},
+		TestCacheConfig: TestCacheConfig{
+			CacheHost:     getEnv("TEST_CACHE_HOST", "127.0.0.1"),
+			CachePort:     getEnv("TEST_CACHE_PORT", "6379"),
+			CacheUsername: getEnv("TEST_CACHE_USERNAME", ""),
+			CachePassword: getEnv("TEST_CACHE_PASSWORD", ""),
+			CacheDB:       getEnvAsInt("TEST_CACHE_DB", 0),
 		},
 	}
 }
