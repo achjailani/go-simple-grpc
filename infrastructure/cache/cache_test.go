@@ -9,7 +9,7 @@ import (
 	"time"
 )
 
-func TestNew(t *testing.T) {
+func TestNew_WithRedis(t *testing.T) {
 	test := tests.Init()
 
 	ctx := test.Ctx
