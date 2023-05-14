@@ -3,6 +3,7 @@ module github/achjailani/go-simple-grpc
 go 1.18
 
 require (
+	github.com/bradfitz/gomemcache v0.0.0-20230124162541-5f7a7d875746
 	github.com/gin-gonic/gin v1.9.0
 	github.com/jaswdr/faker v1.16.0
 	github.com/joho/godotenv v1.4.0
