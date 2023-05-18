@@ -24,7 +24,7 @@ func TestNew_WithRedis(t *testing.T) {
 	assert.NotNil(t, cacheInstance)
 	fmt.Println(test.Cfg.CacheConfig)
 
-	key := "greeting"
+	key := "user:1234"
 	val := "Hi, there!"
 
 	t.Run("it should valid set", func(t *testing.T) {
@@ -39,5 +39,7 @@ func TestNew_WithRedis(t *testing.T) {
 		assert.NoError(t, errGet)
 		assert.NotNil(t, r)
 		assert.Equal(t, val, r.(string))
+		fmt.Println("VAL")
+		fmt.Println(r)
 	})
 }

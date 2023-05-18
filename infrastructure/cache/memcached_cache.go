@@ -27,7 +27,7 @@ func (m *MemcachedCache) Get(_ context.Context, key string) (interface{}, error)
 // Set is a method
 func (m *MemcachedCache) Set(_ context.Context, key string, val interface{}, exp time.Duration) error {
 	if exp < 1 {
-		exp = expiration
+		exp = DefaultExpiration
 	}
 
 	item := &memcache.Item{

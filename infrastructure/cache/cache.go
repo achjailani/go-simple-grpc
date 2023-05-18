@@ -2,15 +2,23 @@ package cache
 
 import (
 	"context"
+	"sync"
 	"time"
 )
 
 const (
-	expiration = 24 * time.Hour
+	// DefaultExpiration is a constant
+	DefaultExpiration = 24 * time.Hour
+)
+
+var (
+	// drivers is a collection of supported drivers
+	drivers = []string{"redis", "memcached"}
 )
 
 // Cache is a type
 type Cache struct {
+	mtx      *sync.Mutex
 	strategy CacheStrategy
 }
 
@@ -18,6 +26,7 @@ type Cache struct {
 func New(strategy CacheStrategy) *Cache {
 	cache := &Cache{
 		strategy: strategy,
+		mtx:      &sync.Mutex{},
 	}
 
 	return cache
@@ -25,6 +34,9 @@ func New(strategy CacheStrategy) *Cache {
 
 // Set is a method
 func (c *Cache) Set(ctx context.Context, key string, val interface{}, duration time.Duration) error {
+	c.mtx.Lock()
+	defer c.mtx.Unlock()
+
 	return c.strategy.Set(ctx, key, val, duration)
 }
 
