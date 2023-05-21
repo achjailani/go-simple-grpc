@@ -29,6 +29,18 @@ func (p *PayPalPayment) pay(amount float64) error {
 	return nil
 }
 
+type GoPayPayment struct {
+}
+
+// Pay is a method
+func (p *GoPayPayment) pay(amount float64) error {
+	fmt.Println("successfully paid with PayPal.")
+
+	return nil
+}
+
+// CONCRETE IMPLEMENTATION
+
 // PaymentHandler is a struct
 type PaymentHandler struct {
 	PaymentMethod PaymentMethod

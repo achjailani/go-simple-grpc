@@ -3,7 +3,7 @@ package solid
 import "fmt"
 
 // SQLConnectionInterface is an interface
-// This is a low-level module
+// This is a low-level module / abstraction
 type SQLConnectionInterface interface {
 	Connect()
 }

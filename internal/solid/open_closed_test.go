@@ -13,4 +13,11 @@ func TestNewPaymentHandler(t *testing.T) {
 	paymentHandler := solid.NewPaymentHandler(paymentMethod)
 	err := paymentHandler.Pay(amount)
 	assert.NoError(t, err)
+
+	gopay := &solid.GoPayPayment{}
+
+	paymentHandler = solid.NewPaymentHandler(gopay)
+	err = paymentHandler.Pay(amount)
+
+	assert.NoError(t, err)
 }
