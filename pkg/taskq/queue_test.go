@@ -42,15 +42,15 @@ func TestNew(t *testing.T) {
 		Data: "Hi, task 1",
 	})
 	_ = taskQueue.Enqueue(ctx, &taskq.Task{
-		ID:   1,
+		ID:   2,
 		Data: "Hi, task 2",
 	})
 	_ = taskQueue.Enqueue(ctx, &taskq.Task{
-		ID:   1,
+		ID:   3,
 		Data: "Hi, task 3",
 	})
 	_ = taskQueue.Enqueue(ctx, &taskq.Task{
-		ID:   1,
+		ID:   4,
 		Data: "Hi, task 4",
 	})
 

@@ -62,7 +62,7 @@ func (w *Worker) process(worker int, task *Task) {
 func (w *Worker) StartWorkers() {
 	for i := 0; i < w.workers; i++ {
 		w.wg.Add(1)
-		go w.run(i)
+		go w.run(i + 1)
 	}
 
 	w.wg.Wait()
