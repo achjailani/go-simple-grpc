@@ -51,13 +51,14 @@ func (w *Worker) run(worker int) {
 	}
 }
 
-// process is a method
+// process is a method to process the job
 func (w *Worker) process(worker int, task *Task) {
 	fmt.Printf("Worker %d processing task (ID: %d, Data: %s)\n", worker, task.ID, task.Data)
 	time.Sleep(1 * time.Second)
 	fmt.Printf("Worker %d completed task (ID: %d, Data: %s)\n", worker, task.ID, task.Data)
 }
 
+// StartWorkers is a method to run all workers
 func (w *Worker) StartWorkers() {
 	for i := 0; i < w.workers; i++ {
 		w.wg.Add(1)
