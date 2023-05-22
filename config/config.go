@@ -104,8 +104,8 @@ func New() *Config {
 		},
 		RedisTestConfig: RedisTestConfig{
 			RedisHost:     getEnv("TEST_REDIS_HOST", "localhost"),
-			RedisPort:     getEnv("TEST_REDIS_HOST", "6379"),
-			RedisPassword: getEnv("TEST_REDIS_HOST", ""),
+			RedisPort:     getEnv("TEST_REDIS_PORT", "6379"),
+			RedisPassword: getEnv("TEST_REDIS_PASSWORD", ""),
 			RedisDB:       getEnvAsInt("TEST_REDIS_HOST", 0),
 		},
 		CacheConfig: CacheConfig{

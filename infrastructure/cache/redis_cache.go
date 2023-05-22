@@ -47,6 +47,11 @@ func NewRedisCache(cfg *config.Config) (*RedisCache, error) {
 
 	conn := redis.NewClient(opt)
 
+	_, err := conn.Ping(context.Background()).Result()
+	if err != nil {
+		return nil, fmt.Errorf("failed to connect to redis: %v", err)
+	}
+
 	return &RedisCache{
 		cfg:    cfg,
 		client: conn,
