@@ -11,6 +11,7 @@ func CollectEntities() []contract.Entity {
 		{Entity: entity.User{}},
 		{Entity: entity.AuthToken{}},
 		{Entity: entity.HttpLog{}},
+		{Entity: entity.PersonalInfo{}},
 	}
 }
 
@@ -19,11 +20,13 @@ func CollectTables() []contract.Table {
 	var user entity.User
 	var authToken entity.AuthToken
 	var httpLog entity.HttpLog
+	var personalInfo entity.PersonalInfo
 
 	return []contract.Table{
 		{Name: user.TableName()},
 		{Name: authToken.TableName()},
 		{Name: httpLog.TableName()},
+		{Name: personalInfo.TableName()},
 	}
 }
 

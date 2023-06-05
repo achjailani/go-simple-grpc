@@ -1,6 +1,7 @@
 package entity
 
 import (
+	"fmt"
 	"github/achjailani/go-simple-grpc/domain/contract"
 	"time"
 )
@@ -31,6 +32,10 @@ func (u PersonalInfo) FilterableFields() []interface{} {
 // TimeFields is a method
 func (u PersonalInfo) TimeFields() []interface{} {
 	return []interface{}{"created_at", "updated_at", "deleted_at"}
+}
+
+func (u PersonalInfo) String() string {
+	return fmt.Sprintf("ID: %d, Name: %s, Email: %s, Phone: %s", u.ID, u.Name, u.Email, u.Phone)
 }
 
 var _ contract.EntityInterface = &User{}

@@ -15,7 +15,7 @@ type PersonalInfoRepo struct {
 
 // NewPersonalInfoRepository is a constructor
 func NewPersonalInfoRepository(db *gorm.DB) *PersonalInfoRepo {
-	return &PersonalInfoRepo{db}
+	return &PersonalInfoRepo{db: db}
 }
 
 var _ repository.PersonalInfoRepositoryInterface = &PersonalInfoRepo{}

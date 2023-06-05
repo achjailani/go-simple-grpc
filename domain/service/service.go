@@ -8,17 +8,19 @@ import (
 
 // Repositories is a struct
 type Repositories struct {
-	User      repository.UserRepositoryInterface
-	AuthToken repository.AuthTokenRepoInterface
-	HttpLog   repository.HttpLogRepositoryInterface
-	DB        *gorm.DB
+	User         repository.UserRepositoryInterface
+	AuthToken    repository.AuthTokenRepoInterface
+	HttpLog      repository.HttpLogRepositoryInterface
+	PersonalInfo repository.PersonalInfoRepositoryInterface
+	DB           *gorm.DB
 }
 
 // NewDBService is constructor
 func NewDBService(db *gorm.DB) *Repositories {
 	return &Repositories{
-		User:    persistence.NewUserRepository(db),
-		HttpLog: persistence.NewHttpLogRepository(db),
-		DB:      db,
+		User:         persistence.NewUserRepository(db),
+		HttpLog:      persistence.NewHttpLogRepository(db),
+		PersonalInfo: persistence.NewPersonalInfoRepository(db),
+		DB:           db,
 	}
 }
