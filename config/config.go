@@ -51,6 +51,16 @@ type TestCacheConfig struct {
 	CacheDB       int
 }
 
+// StorageConfig is a struct
+type StorageConfig struct {
+	StorageProjectID       string
+	StorageEndpoint        string
+	StorageHost            string
+	StorageBucketName      string
+	StorageAccessKeyID     string
+	StorageAccessKeySecret string
+}
+
 type Config struct {
 	AppName     string
 	AppPort     int
@@ -65,6 +75,7 @@ type Config struct {
 	RedisTestConfig
 	CacheConfig
 	TestCacheConfig
+	StorageConfig
 }
 
 func New() *Config {
@@ -121,6 +132,14 @@ func New() *Config {
 			CacheUsername: getEnv("TEST_CACHE_USERNAME", ""),
 			CachePassword: getEnv("TEST_CACHE_PASSWORD", ""),
 			CacheDB:       getEnvAsInt("TEST_CACHE_DB", 0),
+		},
+		StorageConfig: StorageConfig{
+			StorageProjectID:       getEnv("STORAGE_PROJECT_ID", ""),
+			StorageEndpoint:        getEnv("STORAGE_ENDPOINT", "127.0.0.1:9000"),
+			StorageHost:            getEnv("STORAGE_HOST", "127.0.0.1:9000"),
+			StorageBucketName:      getEnv("STORAGE_BUCKET_NAME", ""),
+			StorageAccessKeyID:     getEnv("STORAGE_ACCESS_KEY_ID", ""),
+			StorageAccessKeySecret: getEnv("STORAGE_ACCESS_KEY_SECRET", ""),
 		},
 	}
 }
