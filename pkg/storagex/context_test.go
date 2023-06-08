@@ -43,7 +43,7 @@ func TestNewStorageX(t *testing.T) {
 	t.Run("it should be valid store file", func(t *testing.T) {
 		err = strx.Store(ctx, &storagex.FileUploadObject{
 			File:     file,
-			FileName: f.UUID().V4(),
+			FileName: fmt.Sprintf("filepdf/:%s", f.UUID().V4()),
 		})
 
 		assert.NoError(t, err)
