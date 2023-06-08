@@ -39,10 +39,14 @@ func NewMinio(cfg *config.Config) (*Minio, error) {
 		return nil, err
 	}
 
-	return &Minio{
+	client.SetAppInfo(cfg.AppName, "0.0.1")
+
+	m := &Minio{
 		client: client,
 		bucket: cfg.StorageConfig.StorageBucketName,
-	}, nil
+	}
+
+	return m, nil
 }
 
 var _ StorageStrategy = (*Minio)(nil)
