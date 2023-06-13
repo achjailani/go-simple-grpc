@@ -1,11 +1,13 @@
 package event
 
-import "context"
+import (
+	"context"
+)
 
-// Name is a type
+// Name is a string type for event name
 type Name string
 
-// Event is a contract
+// Event is an event interface
 type Event interface {
-	Handle(ctx context.Context) error
+	Handle(ctx context.Context)
 }

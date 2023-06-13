@@ -1,21 +1,17 @@
 package taskq_test
 
 import (
+	"encoding/json"
 	"fmt"
 	"github.com/redis/go-redis/v9"
 	"github.com/stretchr/testify/assert"
 	"github/achjailani/go-simple-grpc/pkg/taskq"
 	"github/achjailani/go-simple-grpc/tests"
 	"log"
-	"os"
-	"os/signal"
-	"sync"
-	"syscall"
 	"testing"
-	"time"
 )
 
-func TestNew(t *testing.T) {
+func TestNewQueue(t *testing.T) {
 	testbox := tests.Init()
 	cfg := testbox.Cfg
 	ctx := testbox.Ctx
@@ -35,53 +31,40 @@ func TestNew(t *testing.T) {
 	}
 
 	// Create the task queue
-	taskQueue := taskq.NewQueue(client)
+	queue := taskq.NewQueue(client)
+	_ = queue
 
-	_ = taskQueue.Enqueue(ctx, &taskq.Task{
-		ID:   1,
-		Data: "Hi, task 1",
-	})
-	_ = taskQueue.Enqueue(ctx, &taskq.Task{
-		ID:   2,
-		Data: "Hi, task 2",
-	})
-	_ = taskQueue.Enqueue(ctx, &taskq.Task{
-		ID:   3,
-		Data: "Hi, task 3",
-	})
-	_ = taskQueue.Enqueue(ctx, &taskq.Task{
-		ID:   4,
-		Data: "Hi, task 4",
-	})
+	data := make(map[string]interface{})
+	data["name"] = "John Doe"
+	data["age"] = 30
+	data["email"] = "johndoe@example.com"
 
-	// Create a wait group to ensure all worker goroutines finish
-	var wg sync.WaitGroup
+	// generate 10mb data
+	jsonStr, _ := generateJSONWithSize(data, 10*1024*1024)
 
-	// Create a channel to receive termination signals
-	sigChan := make(chan os.Signal, 1)
-	signal.Notify(sigChan, os.Interrupt, syscall.SIGTERM)
+	err = queue.Client.RPush(ctx, "hell_queue", jsonStr).Err()
+	assert.NoError(t, err)
 
-	// Start the workers
-	worker := taskq.NewWorker(3, taskQueue, &wg)
-	worker.StartWorkers()
+	r, err := queue.Client.BLPop(ctx, 0, "hell_queue").Result()
 
-	// Wait for termination signal or completion of all tasks
-	select {
-	case <-sigChan:
-		// Termination signal received, initiate graceful shutdown
-		fmt.Println("Termination signal received. Initiating graceful shutdown...")
-		closeSigChan := make(chan struct{})
-		go func() {
-			close(closeSigChan)
-		}()
+	assert.NoError(t, err)
+	fmt.Println(r)
+}
 
-		select {
-		case <-closeSigChan:
-			fmt.Println("All tasks processed. Exiting...")
-		case <-time.After(5 * time.Second):
-			fmt.Println("Graceful shutdown timed out. Exiting...")
-		}
+// generateJSONWithSize generates a JSON string with the specified approximate size
+func generateJSONWithSize(data map[string]interface{}, size int) (string, error) {
+	jsonBytes, err := json.Marshal(data)
+	if err != nil {
+		return "", err
 	}
 
-	assert.True(t, true)
+	jsonStr := string(jsonBytes)
+	for len(jsonStr) < size {
+		jsonStr += jsonStr
+	}
+
+	// Truncate the JSON string to the specified size
+	jsonStr = jsonStr[:size]
+
+	return jsonStr, nil
 }

@@ -3,56 +3,78 @@ package event
 import (
 	"fmt"
 	"sync"
+	"time"
 )
 
-// Dispatcher is a type
+var (
+	// dispatcher is a global variable
+	dispatcher *Dispatcher
+	// onceDispatcher is a variable to define once instance
+	onceDispatcher sync.Once
+)
+
+// Dispatcher is a struct
 type Dispatcher struct {
-	jobs     chan job
+	data     []string // temporary example
 	events   map[Name]Listener
-	shutdown chan struct{}   // channel to shut down
-	wg       *sync.WaitGroup // waitGroup to wait all goroutines done
-	workers  int
+	shutdown chan struct{}
+	wg       *sync.WaitGroup
 }
 
-// NewDispatcher is a constructor
-func NewDispatcher() *Dispatcher {
-	d := &Dispatcher{
-		jobs:   make(chan job),
-		events: make(map[Name]Listener),
-	}
-
-	go d.consume()
-
-	return d
-}
-
-// Register is a method
-func (d *Dispatcher) Register(listener Listener, names ...Name) error {
-	for _, name := range names {
-		if _, ok := d.events[name]; ok {
-			return fmt.Errorf("the '%s' event is already registered", name)
+// NewDispatcher is constructor
+func NewDispatcher(listener Listener, names ...Name) *Dispatcher {
+	onceDispatcher.Do(func() {
+		dispatcher = &Dispatcher{
+			data:     make([]string, 0),
+			events:   make(map[Name]Listener),
+			shutdown: make(chan struct{}),
+			wg:       &sync.WaitGroup{},
 		}
+	})
 
-		d.events[name] = listener
-	}
+	// register listener & events
+	dispatcher.register(listener, names...)
 
-	return nil
+	return dispatcher
 }
 
-// Dispatch is method
-func (d *Dispatcher) Dispatch(name Name, event interface{}) error {
-	if _, ok := d.events[name]; !ok {
+// dispatch is a method to set new event
+func (dpc *Dispatcher) dispatch(name Name, param interface{}) error {
+	if _, ok := dpc.events[name]; !ok {
 		return fmt.Errorf("the '%s' event is not registered", name)
 	}
 
-	d.jobs <- job{eventName: name, eventType: event}
+	// Dispatching process should be here
+	// let say, you're using redis queue mechanism, you need to perform
+	// push operation here, and should be using sync process
+	// the data below is just and example!
+	dpc.data = append(dpc.data, param.(string))
 
 	return nil
 }
 
 // consume is a method
-func (d *Dispatcher) consume() {
-	for j := range d.jobs {
-		d.events[j.eventName].Listen(j.eventType)
+func (dpc *Dispatcher) consume() {
+	for event, _ := range dpc.events {
+		go dpc.listen(event)
+	}
+}
+
+// listen is a method
+func (dpc *Dispatcher) listen(event Name) {
+	defer dpc.wg.Done()
+	for {
+		select {
+		case <-dpc.shutdown:
+			fmt.Printf("Event %s shutting down\n", event)
+			return
+		default:
+			// Listening process should be here
+			// let say, you're using redis queue mechanism, you need to perform
+			// pop operation here
+			dpc.events[event].Listen(event)
+			fmt.Printf("done here: %s\n", event)
+			time.Sleep(1 * time.Second)
+		}
 	}
 }

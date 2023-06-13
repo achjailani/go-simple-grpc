@@ -1,6 +1,6 @@
 package event
 
-// Listener All custom event listeners must satisfy this interface.
+// Listener is a listener interface
 type Listener interface {
-	Listen(event interface{})
+	Listen(param interface{})
 }
