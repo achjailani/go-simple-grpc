@@ -6,6 +6,7 @@ import "github.com/urfave/cli/v2"
 func (cmd *Command) Build() []*cli.Command {
 	cmd.registerCLI(cmd.newGRPCServer())
 	cmd.registerCLI(cmd.newDBMigrate())
+	cmd.registerCLI(cmd.newWebsocketClient())
 
 	return cmd.CLI
 }

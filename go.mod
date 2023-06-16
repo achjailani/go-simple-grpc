@@ -3,11 +3,15 @@ module github/achjailani/go-simple-grpc
 go 1.18
 
 require (
+	cloud.google.com/go/storage v1.30.1
 	github.com/ClickHouse/clickhouse-go/v2 v2.10.0
 	github.com/bradfitz/gomemcache v0.0.0-20230124162541-5f7a7d875746
+	github.com/gin-contrib/cors v1.4.0
 	github.com/gin-gonic/gin v1.9.0
+	github.com/gorilla/websocket v1.5.0
 	github.com/jaswdr/faker v1.16.0
 	github.com/joho/godotenv v1.4.0
+	github.com/minio/minio-go v6.0.14+incompatible
 	github.com/pdfcpu/pdfcpu v0.4.1
 	github.com/redis/go-redis/v9 v9.0.4
 	github.com/stretchr/testify v1.8.2
@@ -25,7 +29,6 @@ require (
 	cloud.google.com/go/compute v1.20.0 // indirect
 	cloud.google.com/go/compute/metadata v0.2.3 // indirect
 	cloud.google.com/go/iam v1.1.0 // indirect
-	cloud.google.com/go/storage v1.30.1 // indirect
 	github.com/ClickHouse/ch-go v0.52.1 // indirect
 	github.com/andybalholm/brotli v1.0.5 // indirect
 	github.com/bytedance/sonic v1.8.3 // indirect
@@ -67,7 +70,6 @@ require (
 	github.com/leodido/go-urn v1.2.2 // indirect
 	github.com/mattn/go-isatty v0.0.17 // indirect
 	github.com/mattn/go-runewidth v0.0.14 // indirect
-	github.com/minio/minio-go v6.0.14+incompatible // indirect
 	github.com/mitchellh/go-homedir v1.1.0 // indirect
 	github.com/modern-go/concurrent v0.0.0-20180306012644-bacd9c7ef1dd // indirect
 	github.com/modern-go/reflect2 v1.0.2 // indirect
