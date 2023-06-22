@@ -5,6 +5,7 @@ import (
 	"github.com/gin-gonic/gin"
 	"github/achjailani/go-simple-grpc/infrastructure/dependency"
 	"github/achjailani/go-simple-grpc/internal/chat"
+	"github/achjailani/go-simple-grpc/pkg/websocx"
 	"github/achjailani/go-simple-grpc/rest/handler"
 	"github/achjailani/go-simple-grpc/rest/middleware"
 	"log"
@@ -40,10 +41,11 @@ func (r *Router) Init() *gin.Engine {
 	httpLog := handler.NewRequestLogHandler(hand)
 	hello := handler.NewHelloHandler(hand)
 
-	e.GET("/ws", chat.ServeWSChat)
+	e.GET("/chat", chat.ServeWSChat)
 	e.GET("/", serveChatTemplate)
-
-	//e.GET("/ws", websocx.NewWebSocket().Handle)
+	e.GET("/ws", func(c *gin.Context) {
+		websocx.NewWebSocketServer().Serve(c.Writer, c.Request)
+	})
 
 	e.GET("/api/ping", hello.Ping)
 	e.POST("/api/hello", hello.SayHello)
